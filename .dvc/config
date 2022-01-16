@@ -1,0 +1,7 @@
+[core]
+    remote = dvc-ssh-test
+['remote "dvc-ssh-test"']
+    url = ssh://{ip}/home/ubuntu/dvc-ssh-test-dir
+    user = ubuntu
+    port = 22
+    keyfile = {private_key_path.pem}
