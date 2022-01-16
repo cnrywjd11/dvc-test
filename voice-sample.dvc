@@ -1,0 +1,5 @@
+outs:
+- md5: c432f77c2a131ea5201e83613bdc3b7c.dir
+  size: 234042815
+  nfiles: 10
+  path: voice-sample
