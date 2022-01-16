@@ -1,4 +1,6 @@
 # dvc-ssh-test
+
+### dvc 연동 및 push 까지
 ```
 ➜  dvc-ssh-test git:(master) ls
 
@@ -38,7 +40,7 @@ voice-sample/EH2.wav             voice-sample/kbs-news.wav        voice-sample/l
 To track the changes with git, run:
 
 	git add voice-sample.dvc .gitignore
-  
+
 ➜  dvc-ssh-test git:(master) ✗ git add voice-sample.dvc .gitignore
 
 ➜  dvc-ssh-test git:(master) ✗ cat voice-sample.dvc
@@ -47,7 +49,7 @@ outs:
   size: 234042815
   nfiles: 10
   path: voice-sample
-  
+
 ➜  dvc-ssh-test git:(master) ✗ git commit -m "add voice-sample.dvc"
 [master (최상위-커밋) f04267a] add voice-sample.dvc
  11 files changed, 521 insertions(+)
@@ -62,7 +64,7 @@ outs:
  create mode 100644 .dvcignore
  create mode 100644 .gitignore
  create mode 100644 voice-sample.dvc
- 
+
 ➜  dvc-ssh-test git:(master) dvc remote add -d dvc-ssh-test ssh://{ip}/home/ubuntu/dvc-ssh-test-dir
 Setting 'dvc-ssh-test' as a default remote.
 
@@ -80,15 +82,51 @@ Setting 'dvc-ssh-test' as a default remote.
     user = ubuntu
     port = 22
     keyfile = {private_key.pem path}
-  
+
 ➜  dvc-ssh-test git:(master) ✗ git add .dvc/config
 
 ➜  dvc-ssh-test git:(master) ✗ git commit -m "add remote storage(ssh)"
 [master 31f6e5b] add remote storage(ssh)
  1 file changed, 7 insertions(+)
- 
+
 ➜  dvc-ssh-test git:(master) dvc push
 10 files pushed
 
 ```
 
+### push 된 데이터 확인
+```
+➜  ubuntu@{ip}:~/dvc-ssh-test-dir$ ls
+27  7b  8a  ae  b5  c4  dd  e4  e5  f6
+```
+
+### dvc pull
+```
+➜  dvc-test git:(master) ls
+README.md        dvc-ssh-test.md  voice-sample     voice-sample.dvc
+
+➜  dvc-test git:(master) ls voice-sample/*
+voice-sample/EH02_00064_F10A.wav voice-sample/long_20m_34s.wav
+voice-sample/EH2.wav             voice-sample/long_sample.mp3
+voice-sample/heykakao_hello.wav  voice-sample/long_sample.wav
+voice-sample/kbs-news.wav        voice-sample/long_sample_8k.wav
+voice-sample/kbs-news2.wav       voice-sample/res.pcm
+
+➜  dvc-test git:(master) rm -rf voice-sample
+
+➜  dvc-test git:(master) dvc status
+voice-sample.dvc:
+	changed outs:
+		deleted:            voice-sample
+
+➜  dvc-test git:(master) dvc pull
+A       voice-sample/
+1 file added
+
+➜  dvc-test git:(master) ls voice-sample/*
+voice-sample/EH02_00064_F10A.wav voice-sample/long_20m_34s.wav
+voice-sample/EH2.wav             voice-sample/long_sample.mp3
+voice-sample/heykakao_hello.wav  voice-sample/long_sample.wav
+voice-sample/kbs-news.wav        voice-sample/long_sample_8k.wav
+voice-sample/kbs-news2.wav       voice-sample/res.pcm
+```
